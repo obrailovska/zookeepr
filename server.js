@@ -5,7 +5,8 @@ const path = require("path");
 const { animals } = require("./data/animals.json");
 const PORT = process.env.PORT || 3001;
 const app = express();
-
+// lets us use all css and js files in folder public
+app.use(express.static("public"));
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
@@ -110,6 +111,7 @@ function validateAnimal(animal) {
   }
   return true;
 }
+
 app.get("/api/animals", (req, res) => {
   let results = animals;
   if (req.query) {
@@ -137,6 +139,21 @@ app.post("/api/animals", (req, res) => {
     res.json(animal);
   }
 });
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
+  //   we're using the "path" module again to ensure that we're finding the correct location for the HTML code we want to display in the browser. This way, we know it will work in any server environment!
+});
+app.get("/animals", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/animals.html"));
+});
+app.get("/zookeepers", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/zookeepers.html"));
+});
+app.get("*", (req, res) => {
+  // The * will act as a wildcard, meaning any route that wasn't previously defined will fall under this request and will receive the homepage as the response.The * route should always come last.
+  res.sendFile(path.join(__dirname, "./public/index.html"));
+});
+
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}!`);
 });
