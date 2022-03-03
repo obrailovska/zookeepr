@@ -37,6 +37,7 @@ const getAnimals = (formData = {}) => {
   });
 
   console.log(queryUrl);
+
   fetch(queryUrl)
     .then((response) => {
       if (!response.ok) {
@@ -49,6 +50,7 @@ const getAnimals = (formData = {}) => {
       printResults(animalData);
     });
 };
+
 const handleGetAnimalsSubmit = (event) => {
   event.preventDefault();
   const dietRadioHTML = $animalForm.querySelectorAll('[name="diet"]');
